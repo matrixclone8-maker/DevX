@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEase 🌿 | Bem-Estar e Equilíbrio</title>
+<style>
+/* ======== ESTILO GLOBAL ======== */
+:root {
+  --cor-principal: #2aa89a;
+  --cor-secundaria: #e0f7f4;
+  --cor-texto: #333;
+  --cor-clara: #fff;
+  --sombra: 0 4px 15px rgba(0,0,0,0.1);
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: var(--cor-secundaria);
+  color: var(--cor-texto);
+  transition: 0.3s;
+}
+.dark-mode {
+  --cor-principal: #1c716a;
+  --cor-secundaria: #1b1b1b;
+  --cor-texto: #f2f2f2;
+  --cor-clara: #262626;
+}
+header {
+  background: var(--cor-principal);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+  position: relative;
+}
+header h1 { margin: 0; font-size: 2em; }
+.theme-toggle {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  cursor: pointer;
+}
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 10px;
+}
+section {
+  background: var(--cor-clara);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--sombra);
+  margin-bottom: 30px;
+}
+h2 {
+  color: var(--cor-principal);
+  margin-bottom: 10px;
+}
+button {
+  background: var(--cor-principal);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover { opacity: 0.9; }
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+canvas {
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-height: 250px;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+.hidden { display: none; }
+
+/* ===== Respiração ===== */
+.breathe-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--cor-principal);
+  margin: 20px auto;
+  animation: breathe 8s ease-in-out infinite;
+}
+@keyframes breathe {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* ===== Chat ===== */
+.chat-box {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+.message { margin: 8px 0; }
+.user { text-align: right; color: var(--cor-principal); }
+.bot { text-align: left; color: #444; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌿 MindEase</h1>
+  <p>Seu espaço de equilíbrio e autocuidado</p>
+  <button class="theme-toggle" onclick="alternarTema()">🌙</button>
+</header>
+
+<main>
+
+<!-- LOGIN -->
+<section id="login-section">
+  <h2>🔐 Entrar / Cadastrar</h2>
+  <input type="text" id="username" placeholder="Nome de usuário">
+  <input type="password" id="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <button onclick="cadastrar()">Cadastrar</button>
+  <p id="loginMsg"></p>
+</section>
+
+<section id="conteudo" class="hidden">
+
+<!-- HUMOR -->
+<section id="humor">
+  <h2>📔 Diário de Humor</h2>
+  <select id="humor-select">
+    <option value="5">😊 Excelente</option>
+    <option value="4">😀 Bom</option>
+    <option value="3">😐 Neutro</option>
+    <option value="2">😕 Triste</option>
+    <option value="1">😞 Péssimo</option>
+  </select>
+  <textarea id="humor-texto" placeholder="Como você está se sentindo hoje?"></textarea>
+  <button onclick="registrarHumor()">Registrar</button>
+  <p id="humorMsg"></p>
+  <canvas id="graficoHumor"></canvas>
+</section>
+
+<!-- RESPIRAÇÃO -->
+<section id="respiracao">
+  <h2>🧘‍♀️ Respiração Guiada</h2>
+  <div class="breathe-circle"></div>
+  <p id="textoResp">Inspire...</p>
+  <button onclick="iniciarRespiracao()">Iniciar Sessão</button>
+</section>
+
+<!-- SONS -->
+<section id="sons">
+  <h2>🎧 Sons Relaxantes</h2>
+  <select id="somSelect">
+    <option value="chuva">Chuva</option>
+    <option value="floresta">Floresta</option>
+    <option value="oceano">Oceano</option>
+  </select>
+  <button onclick="tocarSom()">Reproduzir</button>
+  <audio id="player" controls class="hidden"></audio>
+</section>
+
+<!-- CHAT -->
+<section id="chat">
+  <h2>💬 Chat de Apoio</h2>
+  <div class="chat-box" id="chatBox"></div>
+  <input type="text" id="msg" placeholder="Digite sua mensagem...">
+  <button onclick="enviarMsg()">Enviar</button>
+</section>
+
+</section>
+</main>
+
+<footer>
+  <p>© 2025 MindEase | Desenvolvido com 💚 por você</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// ======== Tema Claro / Escuro ========
+function alternarTema() {
+  document.body.classList.toggle('dark-mode');
+}
+
+// ======== Login Simples ========
+function login() {
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  if (users[u] && users[u] === p) {
+    localStorage.setItem('loggedUser', u);
+    document.getElementById('login-section').classList.add('hidden');
+    document.getElementById('conteudo').classList.remove('hidden');
+  } else {
+    document.getElementById('loginMsg').textContent = 'Usuário ou senha incorretos.';
+  }
+}
+function cadastrar() {
+  const u = document.getElementById('username').value;
+  const p = document.getElementById('password').value;
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  if (u && p) {
+    users[u] = p;
+    localStorage.setItem('users', JSON.stringify(users));
+    document.getElementById('loginMsg').textContent = 'Cadastro realizado! Faça login.';
+  }
+}
+
+// ======== Diário de Humor ========
+let registrosHumor = JSON.parse(localStorage.getItem('humorData') || '[]');
+let graficoHumor;
+function registrarHumor() {
+  const humor = parseInt(document.getElementById('humor-select').value);
+  const texto = document.getElementById('humor-texto').value;
+  const data = new Date().toLocaleDateString();
+  registrosHumor.push({ data, humor, texto });
+  localStorage.setItem('humorData', JSON.stringify(registrosHumor));
+  document.getElementById('humorMsg').textContent = 'Humor registrado!';
+  atualizarGraficoHumor();
+}
+function atualizarGraficoHumor() {
+  const ctx = document.getElementById('graficoHumor');
+  if (graficoHumor) graficoHumor.destroy();
+  graficoHumor = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: registrosHumor.map(r => r.data),
+      datasets: [{ label: 'Humor', data: registrosHumor.map(r => r.humor), borderColor: '#2aa89a', fill: false }]
+    },
+    options: { scales: { y: { min: 0, max: 5 } } }
+  });
+}
+window.onload = atualizarGraficoHumor;
+
+// ======== Respiração ========
+let etapa = 0;
+function iniciarRespiracao() {
+  const texto = document.getElementById('textoResp');
+  etapa = 0;
+  setInterval(() => {
+    etapa = (etapa + 1) % 3;
+    if (etapa === 0) texto.textContent = "Inspire...";
+    if (etapa === 1) texto.textContent = "Segure...";
+    if (etapa === 2) texto.textContent = "Expire...";
+  }, 4000);
+}
+
+// ======== Sons Relaxantes ========
+function tocarSom() {
+  const som = document.getElementById('somSelect').value;
+  const player = document.getElementById('player');
+  let src = '';
+  if (som === 'chuva') src = 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_4b0c56b9ee.mp3';
+  if (som === 'floresta') src = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_4a14f38a76.mp3';
+  if (som === 'oceano') src = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_9f8e309f42.mp3';
+  player.src = src;
+  player.classList.remove('hidden');
+  player.play();
+ fetch("https://meudominio.com/api/chat", {
+  method: "POST",
+  body: JSON.stringify({ msg: "Oi" }),
+  headers: { "Content-Type": "application/json" }
+})
+.then(res => res.json())
+.then(data => console.log(data));
+
+}
+
+// ======== Chat Simulado ========
+function enviarMsg() {
+  const msg = document.getElementById('msg').value;
+  const chat = document.getElementById('chatBox');
+  if (!msg) return;
+  chat.innerHTML += `<div class="message user">${msg}</div>`;
+  document.getElementById('msg').value = '';
+  
+  setTimeout(() => {
+    let resposta = "Entendo. Quer conversar mais sobre isso?";
+    if (msg.toLowerCase().includes("triste")) resposta = "Sinto muito 😔. Respire fundo, tudo vai melhorar.";
+    if (msg.toLowerCase().includes("bem")) resposta = "Fico feliz por isso 😊 Continue assim!";
+    chat.innerHTML += `<div class="message bot">${resposta}</div>`;
+    chat.scrollTop = chat.scrollHeight;
+  }, 1000);
+
+  // TODO conectar com Java: enviar mensagem via fetch('/api/chat', { method:'POST', body: msg })
+}
+</script>
+</body>
+</html>
