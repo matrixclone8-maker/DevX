@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Socket Test</title></head>
+<body>
+  <input id="t" placeholder="mensagem"><button id="s">Enviar</button>
+  <pre id="out"></pre>
+
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    socket.on('connect', () => console.log('conectado', socket.id));
+    socket.on('msg', m => {
+      document.getElementById('out').textContent += m + '\n';
+    });
+
+    document.getElementById('s').addEventListener('click', () => {
+      const text = document.getElementById('t').value;
+      socket.emit('msg', text);
+    });
+  </script>
+</body>
+</html>
