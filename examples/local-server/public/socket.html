@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Socket Test (examples/local-server)</title></head>
+<body>
+  <h1>Socket Test (examples/local-server)</h1>
+  <input id="t" placeholder="mensagem"><button id="s">Enviar</button>
+  <pre id="out"></pre>
+
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+  <script>
+    // connect to same origin where this page is served
+    const socket = io();
+    socket.on('connect', () => console.log('conectado', socket.id));
+    socket.on('msg', m => {
+      document.getElementById('out').textContent += m + '\n';
+    });
+
+    document.getElementById('s').addEventListener('click', () => {
+      const text = document.getElementById('t').value;
+      socket.emit('msg', text);
+    });
+  </script>
+</body>
+</html>
